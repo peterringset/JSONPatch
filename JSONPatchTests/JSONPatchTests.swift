@@ -7,28 +7,84 @@
 //
 
 import XCTest
+
 @testable import JSONPatch
 
 class JSONPatchTests: XCTestCase {
 
-    override func setUp() {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
+    lazy var encoder: JSONEncoder = {
+        let encoder = JSONEncoder()
+        encoder.outputFormatting = [.sortedKeys]
+        
+        return encoder
+    }()
+    
+    func testAdd() {
+        let patch = JSONPatch<MyType, String>.add(keyPath: \.property, value: "addString")
+        let data = try! encoder.encode(patch)
+        let jsonString = String(data: data, encoding: .utf8)!
+        XCTAssertEqual(jsonString, """
+            {"op":"add","path":"\\/property","value":"addString"}
+            """)
     }
 
-    override func tearDown() {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
+    func testRemove() {
+        let patch = JSONPatch<MyType, String>.remove(keyPath: \.property)
+        let data = try! encoder.encode(patch)
+        let jsonString = String(data: data, encoding: .utf8)!
+        XCTAssertEqual(jsonString, """
+            {"op":"remove","path":"\\/property"}
+            """)
     }
 
-    func testExample() {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
+    func testReplace() {
+        let patch = JSONPatch<MyType, String>.replace(keyPath: \.property, value: "replaceString")
+        let data = try! encoder.encode(patch)
+        let jsonString = String(data: data, encoding: .utf8)!
+        XCTAssertEqual(jsonString, """
+            {"op":"replace","path":"\\/property","value":"replaceString"}
+            """)
     }
 
-    func testPerformanceExample() {
-        // This is an example of a performance test case.
-        self.measure {
-            // Put the code you want to measure the time of here.
-        }
+    func testMove() {
+        let patch = JSONPatch<MyType, String>.move(fromKeyPath: \.property, toKeyPath: \.secondProperty)
+        let data = try! encoder.encode(patch)
+        let jsonString = String(data: data, encoding: .utf8)!
+        XCTAssertEqual(jsonString, """
+            {"from":"\\/property","op":"move","path":"\\/secondProperty"}
+            """)
     }
 
+    func testCopy() {
+        let patch = JSONPatch<MyType, String>.copy(fromKeyPath: \.property, toKeyPath: \.secondProperty)
+        let data = try! encoder.encode(patch)
+        let jsonString = String(data: data, encoding: .utf8)!
+        XCTAssertEqual(jsonString, """
+            {"from":"\\/property","op":"copy","path":"\\/secondProperty"}
+            """)
+    }
+
+    func testTest() {
+        let patch = JSONPatch<MyType, String>.test(keyPath: \.property, value: "testString")
+        let data = try! encoder.encode(patch)
+        let jsonString = String(data: data, encoding: .utf8)!
+        XCTAssertEqual(jsonString, """
+            {"op":"test","path":"\\/property","value":"testString"}
+            """)
+    }
+
+}
+
+private class MyType: NSObject {
+    
+    @objc let property: String
+    @objc let secondProperty: String
+    
+    override init() {
+        property = "prop"
+        secondProperty = "secondProp"
+        
+        super.init()
+    }
+    
 }
