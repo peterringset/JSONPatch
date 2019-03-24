@@ -1,5 +1,5 @@
 # JSONPatch
-[![CocoaPods Compatible](https://img.shields.io/cocoapods/v/PRJSONPatch.svg)](https://img.shields.io/cocoapods/v/Alamofire.svg)
+[![CocoaPods Compatible](https://img.shields.io/cocoapods/v/PRJSONPatch.svg)](https://img.shields.io/cocoapods/v/PRJSONPatch.svg)
 [![Carthage Compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
 [![MIT Licence](https://badges.frapsoft.com/os/mit/mit.svg?v=103)](https://opensource.org/licenses/mit-license.php)
 

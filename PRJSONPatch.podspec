@@ -1,3 +1,4 @@
+# coding: utf-8
 #
 #  Be sure to run `pod spec lint JSONPatch.podspec' to ensure this is a
 #  valid spec and to remove all comments including this before submitting the spec.
@@ -9,7 +10,7 @@
 Pod::Spec.new do |s|
 
   s.name         = "PRJSONPatch"
-  s.version      = "1.0"
+  s.version      = "1.0.1"
   s.summary      = "A Swift μ-framework for creating RFC6902-compliant JSON patch objects"
   s.description  = <<-DESC
                    A Swift µ-framework for creating RFC6902-compliant JSON patch objects.
