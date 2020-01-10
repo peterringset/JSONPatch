@@ -5,7 +5,7 @@ import PackageDescription
 let package = Package(
     name: "JSONPatch",
     platforms: [
-        .iOS(.v8), .macOS(.v10_10)
+        .iOS(.v8), .macOS(.v10_13)
     ],
     products: [
         .library(
