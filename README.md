@@ -7,7 +7,7 @@ A Swift μ-framework for creating [RFC6902](https://tools.ietf.org/html/rfc6902)
 
 ## Requirements
 
-- iOS 8.0+ / macOS 10.10+
+- iOS 8.0+ / macOS 10.13+
 - Swift 4.2+
 
 ### IMPORTANT!
@@ -52,6 +52,9 @@ target '<Your Target Name>' do
     pod 'PRJSONPatch', '~> 1.0'
 end
 ```
+
+### Swift package manger
+To add a package dependency to your Xcode project, select File > Swift Packages > Add Package Dependency and enter `https://github.com/peterringset/JSONPatch`. 
 
 ## Usage
 
