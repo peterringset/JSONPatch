@@ -8,14 +8,48 @@
 
 import Foundation
 
-public enum JSONPatch<Root: NSObject, Value: Encodable> {
+public struct JSONPatch<Root: NSObject> {
     
-    case add(KeyPath<Root, Value>, value: Value)
-    case remove(KeyPath<Root, Value>)
-    case replace(KeyPath<Root, Value>, value: Value)
-    case move(from: KeyPath<Root, Value>, to: KeyPath<Root, Value>)
-    case copy(from: KeyPath<Root, Value>, to: KeyPath<Root, Value>)
-    case test(KeyPath<Root, Value>, value: Value)
+    typealias StringKeyPath = String
+    
+    enum Operation {
+        case add(keyPath: StringKeyPath, value: AnyEncodable)
+        case remove(keyPath: StringKeyPath)
+        case replace(keyPath: StringKeyPath, value: AnyEncodable)
+        case move(from: StringKeyPath, to: StringKeyPath)
+        case copy(from: StringKeyPath, to: StringKeyPath)
+        case test(keyPath: StringKeyPath, value: AnyEncodable)
+    }
+    
+    let operation: Operation
+    
+    init(operation: Operation) {
+        self.operation = operation
+    }
+    
+    public static func add<V: Encodable>(_ keyPath: KeyPath<Root, V>, value: V) -> Self {
+        return .init(operation: .add(keyPath: String(describing: keyPath), value: AnyEncodable(value)))
+    }
+    
+    public static func remove<V>(_ keyPath: KeyPath<Root, V>) -> Self {
+        return .init(operation: .remove(keyPath: String(describing: keyPath)))
+    }
+    
+    public static func replace<V: Encodable>(_ keyPath: KeyPath<Root, V>, value: V) -> Self {
+        return .init(operation: .replace(keyPath: String(describing: keyPath), value: AnyEncodable(value)))
+    }
+    
+    public static func move<V>(from: KeyPath<Root, V>, to: KeyPath<Root, V>) -> Self {
+        return .init(operation: .move(from: String(describing: from), to: String(describing: to)))
+    }
+    
+    public static func copy<V>(from: KeyPath<Root, V>, to: KeyPath<Root, V>) -> Self {
+        return .init(operation: .copy(from: String(describing: from), to: String(describing: to)))
+    }
+    
+    public static func test<V: Encodable>(_ keyPath: KeyPath<Root, V>, value: V) -> Self {
+        return .init(operation: .test(keyPath: String(describing: keyPath), value: AnyEncodable(value)))
+    }
     
 }
 
@@ -28,49 +62,35 @@ extension JSONPatch: Encodable {
         case value
     }
     
-    private enum Operation: String, Encodable {
-        case add
-        case remove
-        case replace
-        case move
-        case copy
-        case test
-    }
-    
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        
-        try container.encode(self.operation, forKey: .operation)
-        if let from = self.from {
-            try container.encode(from, forKey: .from)
-        }
-        try container.encode(self.path, forKey: .path)
-        if let value = self.value {
-            try container.encode(value, forKey: .value)
+        try container.encode(operationName, forKey: .operation)
+        try container.encodeIfPresent(from, forKey: .from)
+        try container.encode(path, forKey: .path)
+        try container.encodeIfPresent(value, forKey: .value)
+    }
+    
+    private var operationName: String {
+        switch operation {
+        case .add: return "add"
+        case .remove: return "remove"
+        case .replace: return "replace"
+        case .move: return "move"
+        case .copy: return "copy"
+        case .test: return "test"
         }
     }
     
-    private var operation: Operation {
-        switch self {
-        case .add: return .add
-        case .remove: return .remove
-        case .replace: return .replace
-        case .move: return .move
-        case .copy: return .copy
-        case .test: return .test
+    private var from: StringKeyPath? {
+        switch operation {
+        case .move(let from, _): fallthrough
+        case .copy(let from, _): return from
+        case .add, .replace, .remove, .test: return nil
         }
     }
     
-    private var from: KeyPath<Root, Value>? {
-        switch self {
-        case .move(let fromKeyPath, _): return fromKeyPath
-        case .copy(let fromKeyPath, _): return fromKeyPath
-        case .add, .remove, .replace, .test: return nil
-        }
-    }
-    
-    private var path: KeyPath<Root, Value> {
-        switch self {
+    private var path: StringKeyPath {
+        switch operation {
         case .add(let keyPath, _): return keyPath
         case .remove(let keyPath): return keyPath
         case .replace(let keyPath, _): return keyPath
@@ -80,8 +100,8 @@ extension JSONPatch: Encodable {
         }
     }
     
-    private var value: Value? {
-        switch self {
+    private var value: AnyEncodable? {
+        switch operation {
         case .add(_, let value): return value
         case .replace(_, let value): return value
         case .test(_, let value): return value
