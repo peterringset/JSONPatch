@@ -81,11 +81,11 @@ class JSONPatchTests: XCTestCase {
 
 }
 
-private class MyType: NSObject {
+@objcMembers private class MyType: NSObject {
     
-    @objc let property: String
-    @objc let secondProperty: String
-    @objc let thirdProperty: Int
+    let property: String
+    let secondProperty: String
+    let thirdProperty: Int
     
     override init() {
         property = "prop"

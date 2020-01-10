@@ -22,6 +22,14 @@ class Patch: NSObject {
 }
 ```
 
+Alternatively you can also use the `@objcMembers` annotation at the class level if all class members are representible in Objective C
+
+```swift
+@objcMembers class Patch: NSObject {
+	...
+}
+```
+
 ## Installation
 ### Carthage
 
@@ -52,11 +60,11 @@ Create JSON patch objects using keypath's in Swift:
 ```swift
 import JSONPatch
 
-let stringChanges: [JSONPatch<Patch, String>] = [
+let stringChanges: [JSONPatch<Patch>] = [
     .replace(\.baz, value: "boo"),
     .remove(\.foo)
 ]
-let arrayChanges: [JSONPatch<Patch, [String]>] = [
+let arrayChanges: [JSONPatch<Patch>] = [
     .add(\.hello, value: ["world"])
 ]
 ```
@@ -88,7 +96,7 @@ This will print the following json:
     "op" : "add",
     "path" : "\/hello",
     "value" : [
-       "world"
+      "world"
     ]
   }
 ]
