@@ -11,9 +11,19 @@ import Foundation
 extension KeyPath: Encodable where Root: NSObject {
     
     public func encode(to encoder: Encoder) throws {
-        let stringValue = NSExpression(forKeyPath: self).keyPath.replacingOccurrences(of: ".", with: "/")
         var container = encoder.singleValueContainer()
-        try container.encode("/" + stringValue)
+        try container.encode(self.description)
+    }
+    
+}
+
+extension KeyPath: CustomStringConvertible {
+    
+    public var description: String {
+        let path = NSExpression(forKeyPath: self)
+            .keyPath
+            .replacingOccurrences(of: ".", with: "/")
+        return "/\(path)"
     }
     
 }
