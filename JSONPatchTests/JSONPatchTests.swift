@@ -25,54 +25,42 @@ class JSONPatchTests: XCTestCase {
         let patch = JSONPatch<MyType, String>.add(\.property, value: "addString")
         let data = try! encoder.encode(patch)
         let jsonString = String(data: data, encoding: .utf8)!
-        XCTAssertEqual(jsonString, """
-            {"op":"add","path":"\\/property","value":"addString"}
-            """)
+        XCTAssertEqual(jsonString, #"{"op":"add","path":"\/property","value":"addString"}"#)
     }
 
     func testRemove() {
         let patch = JSONPatch<MyType, String>.remove(\.property)
         let data = try! encoder.encode(patch)
         let jsonString = String(data: data, encoding: .utf8)!
-        XCTAssertEqual(jsonString, """
-            {"op":"remove","path":"\\/property"}
-            """)
+        XCTAssertEqual(jsonString, #"{"op":"remove","path":"\/property"}"#)
     }
 
     func testReplace() {
         let patch = JSONPatch<MyType, String>.replace(\.property, value: "replaceString")
         let data = try! encoder.encode(patch)
         let jsonString = String(data: data, encoding: .utf8)!
-        XCTAssertEqual(jsonString, """
-            {"op":"replace","path":"\\/property","value":"replaceString"}
-            """)
+        XCTAssertEqual(jsonString, #"{"op":"replace","path":"\/property","value":"replaceString"}"#)
     }
 
     func testMove() {
         let patch = JSONPatch<MyType, String>.move(from: \.property, to: \.secondProperty)
         let data = try! encoder.encode(patch)
         let jsonString = String(data: data, encoding: .utf8)!
-        XCTAssertEqual(jsonString, """
-            {"from":"\\/property","op":"move","path":"\\/secondProperty"}
-            """)
+        XCTAssertEqual(jsonString, #"{"from":"\/property","op":"move","path":"\/secondProperty"}"#)
     }
 
     func testCopy() {
         let patch = JSONPatch<MyType, String>.copy(from: \.property, to: \.secondProperty)
         let data = try! encoder.encode(patch)
         let jsonString = String(data: data, encoding: .utf8)!
-        XCTAssertEqual(jsonString, """
-            {"from":"\\/property","op":"copy","path":"\\/secondProperty"}
-            """)
+        XCTAssertEqual(jsonString, #"{"from":"\/property","op":"copy","path":"\/secondProperty"}"#)
     }
 
     func testTest() {
         let patch = JSONPatch<MyType, String>.test(\.property, value: "testString")
         let data = try! encoder.encode(patch)
         let jsonString = String(data: data, encoding: .utf8)!
-        XCTAssertEqual(jsonString, """
-            {"op":"test","path":"\\/property","value":"testString"}
-            """)
+        XCTAssertEqual(jsonString, #"{"op":"test","path":"\/property","value":"testString"}"#)
     }
 
 }
