@@ -36,7 +36,7 @@ Alternatively you can also use the `@objcMembers` annotation at the class level 
 To integrate JSONPatch into your Xcode project using [Carthage](https://github.com/Carthage/Carthage), specify it in your `Cartfile`:
 
 ```ogdl
-github "peterringset/JSONPatch" ~> 1.0
+github "peterringset/JSONPatch" ~> 2.0
 ```
 
 ### CocoaPods
@@ -49,7 +49,7 @@ platform :ios, '8.0'
 use_frameworks!
 
 target '<Your Target Name>' do
-    pod 'PRJSONPatch', '~> 1.0'
+    pod 'PRJSONPatch', '~> 2.0'
 end
 ```
 

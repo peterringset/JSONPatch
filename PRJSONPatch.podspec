@@ -10,7 +10,7 @@
 Pod::Spec.new do |s|
 
   s.name         = "PRJSONPatch"
-  s.version      = "1.0.1"
+  s.version      = "2.0.0"
   s.summary      = "A Swift μ-framework for creating RFC6902-compliant JSON patch objects"
   s.description  = <<-DESC
                    A Swift µ-framework for creating RFC6902-compliant JSON patch objects.
