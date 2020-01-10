@@ -62,6 +62,22 @@ class JSONPatchTests: XCTestCase {
         let jsonString = String(data: data, encoding: .utf8)!
         XCTAssertEqual(jsonString, #"{"op":"test","path":"\/property","value":"testString"}"#)
     }
+    
+    func testMultiplePatches() {
+        let patches: [JSONPatch<MyType>] = [
+            .add(\.property, value: "Hello, "),
+            .test(\.secondProperty, value: "world!"),
+            .remove(\.thirdProperty)
+        ]
+        let data = try! encoder.encode(patches)
+        let jsonString = String(data: data, encoding: .utf8)
+        
+        let addString = #"{"op":"add","path":"\/property","value":"Hello, "}"#
+        let testString = #"{"op":"test","path":"\/secondProperty","value":"world!"}"#
+        let removeString = #"{"op":"remove","path":"\/thirdProperty"}"#
+        let expectedString = "[\(addString),\(testString),\(removeString)]"
+        XCTAssertEqual(jsonString, expectedString)
+    }
 
 }
 
@@ -69,10 +85,12 @@ private class MyType: NSObject {
     
     @objc let property: String
     @objc let secondProperty: String
+    @objc let thirdProperty: Int
     
     override init() {
         property = "prop"
         secondProperty = "secondProp"
+        thirdProperty = 3
         
         super.init()
     }
