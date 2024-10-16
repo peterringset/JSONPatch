@@ -9,6 +9,7 @@
 import Foundation
 
 public struct JSONPatch<Root: NSObject> {
+@available(iOS 16.4, macOS 13.3, *)
     
     typealias StringKeyPath = String
     
@@ -53,6 +54,7 @@ public struct JSONPatch<Root: NSObject> {
     
 }
 
+@available(iOS 16.4, macOS 13.3, *)
 extension JSONPatch: Encodable {
     
     private enum CodingKeys: String, CodingKey {

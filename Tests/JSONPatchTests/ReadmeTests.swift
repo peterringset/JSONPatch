@@ -9,6 +9,7 @@
 import JSONPatch
 import XCTest
 
+@available(iOS 16.4, macOS 13.3, *)
 class ReadmeTests: XCTestCase {
 
     func testReadmeExampleCode() {

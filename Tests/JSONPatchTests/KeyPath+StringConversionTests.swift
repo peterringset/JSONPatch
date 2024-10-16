@@ -8,6 +8,7 @@
 
 import XCTest
 
+@available(iOS 16.4, macOS 13.3, *)
 class KeyPath_StringConversionTests: XCTestCase {
 
     func testKeyPath() {

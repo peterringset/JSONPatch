@@ -8,6 +8,7 @@
 
 import Foundation
 
+@available(iOS 16.4, macOS 13.3, *)
 extension KeyPath: CustomStringConvertible {
     
     public var description: String {

@@ -10,6 +10,7 @@ import XCTest
 
 @testable import JSONPatch
 
+@available(iOS 16.4, macOS 13.3, *)
 class JSONPatchTests: XCTestCase {
 
     lazy var encoder: JSONEncoder = {
