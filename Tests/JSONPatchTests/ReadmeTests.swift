@@ -23,7 +23,7 @@ class ReadmeTests: XCTestCase {
         let changes = stringChanges + arrayChanges
         
         let encoder = JSONEncoder()
-        encoder.outputFormatting = .prettyPrinted
+        encoder.outputFormatting = [.prettyPrinted, .sortedKeys]
 
         let data = try! encoder.encode(changes)
         print(String(data: data, encoding: .utf8)!)
