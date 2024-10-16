@@ -9,6 +9,7 @@
 import JSONPatch
 import XCTest
 
+@available(iOS 16.4, macOS 13.3, *)
 class ReadmeTests: XCTestCase {
 
     func testReadmeExampleCode() {
@@ -23,10 +24,9 @@ class ReadmeTests: XCTestCase {
         let changes = stringChanges + arrayChanges
         
         let encoder = JSONEncoder()
-        encoder.outputFormatting = .prettyPrinted
+        encoder.outputFormatting = [.prettyPrinted, .sortedKeys]
 
         let data = try! encoder.encode(changes)
-        print(String(data: data, encoding: .utf8)!)
         
         let expectedString = """
             [

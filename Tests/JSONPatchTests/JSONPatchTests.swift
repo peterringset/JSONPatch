@@ -10,6 +10,7 @@ import XCTest
 
 @testable import JSONPatch
 
+@available(iOS 16.4, macOS 13.3, *)
 class JSONPatchTests: XCTestCase {
 
     lazy var encoder: JSONEncoder = {
@@ -62,7 +63,7 @@ class JSONPatchTests: XCTestCase {
         let jsonString = String(data: data, encoding: .utf8)!
         XCTAssertEqual(jsonString, #"{"op":"test","path":"\/property","value":"testString"}"#)
     }
-    
+
     func testMultiplePatches() {
         let patches: [JSONPatch<MyType>] = [
             .add(\.property, value: "Hello, "),
@@ -81,18 +82,16 @@ class JSONPatchTests: XCTestCase {
 
 }
 
-@objcMembers private class MyType: NSObject {
+private class MyType {
     
     let property: String
     let secondProperty: String
     let thirdProperty: Int
-    
-    override init() {
-        property = "prop"
-        secondProperty = "secondProp"
-        thirdProperty = 3
-        
-        super.init()
+
+    init(property: String, secondProperty: String, thirdProperty: Int) {
+        self.property = property
+        self.secondProperty = secondProperty
+        self.thirdProperty = thirdProperty
     }
-    
+
 }

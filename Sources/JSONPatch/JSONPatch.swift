@@ -8,8 +8,8 @@
 
 import Foundation
 
-public struct JSONPatch<Root: NSObject> {
-    
+@available(iOS 16.4, macOS 13.3, *)
+public struct JSONPatch<Root> {
     typealias StringKeyPath = String
     
     enum Operation {
@@ -28,31 +28,32 @@ public struct JSONPatch<Root: NSObject> {
     }
     
     public static func add<V: Encodable>(_ keyPath: KeyPath<Root, V>, value: V) -> Self {
-        return .init(operation: .add(keyPath: String(describing: keyPath), value: AnyEncodable(value)))
+        return .init(operation: .add(keyPath: keyPath.path, value: AnyEncodable(value)))
     }
     
     public static func remove<V>(_ keyPath: KeyPath<Root, V>) -> Self {
-        return .init(operation: .remove(keyPath: String(describing: keyPath)))
+        return .init(operation: .remove(keyPath: keyPath.path))
     }
     
     public static func replace<V: Encodable>(_ keyPath: KeyPath<Root, V>, value: V) -> Self {
-        return .init(operation: .replace(keyPath: String(describing: keyPath), value: AnyEncodable(value)))
+        return .init(operation: .replace(keyPath: keyPath.path, value: AnyEncodable(value)))
     }
     
     public static func move<V>(from: KeyPath<Root, V>, to: KeyPath<Root, V>) -> Self {
-        return .init(operation: .move(from: String(describing: from), to: String(describing: to)))
+        return .init(operation: .move(from: from.path, to: to.path))
     }
     
     public static func copy<V>(from: KeyPath<Root, V>, to: KeyPath<Root, V>) -> Self {
-        return .init(operation: .copy(from: String(describing: from), to: String(describing: to)))
+        return .init(operation: .copy(from: from.path, to: to.path))
     }
     
     public static func test<V: Encodable>(_ keyPath: KeyPath<Root, V>, value: V) -> Self {
-        return .init(operation: .test(keyPath: String(describing: keyPath), value: AnyEncodable(value)))
+        return .init(operation: .test(keyPath: keyPath.path, value: AnyEncodable(value)))
     }
     
 }
 
+@available(iOS 16.4, macOS 13.3, *)
 extension JSONPatch: Encodable {
     
     private enum CodingKeys: String, CodingKey {
