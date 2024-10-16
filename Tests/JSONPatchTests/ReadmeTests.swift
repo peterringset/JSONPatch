@@ -27,7 +27,6 @@ class ReadmeTests: XCTestCase {
         encoder.outputFormatting = [.prettyPrinted, .sortedKeys]
 
         let data = try! encoder.encode(changes)
-        print(String(data: data, encoding: .utf8)!)
         
         let expectedString = """
             [

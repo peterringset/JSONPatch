@@ -9,13 +9,12 @@
 import Foundation
 
 @available(iOS 16.4, macOS 13.3, *)
-extension KeyPath: CustomStringConvertible {
-    
-    public var description: String {
-        let path = NSExpression(forKeyPath: self)
-            .keyPath
-            .replacingOccurrences(of: ".", with: "/")
-        return "/\(path)"
+extension KeyPath {
+    var path: String {
+        "/\(localPath)"
     }
-    
+
+    private var localPath: String {
+        debugDescription.split(separator: ".").dropFirst().joined(separator: "/")
+    }
 }

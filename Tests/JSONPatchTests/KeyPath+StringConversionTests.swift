@@ -8,30 +8,31 @@
 
 import XCTest
 
+@testable import JSONPatch
+
 @available(iOS 16.4, macOS 13.3, *)
 class KeyPath_StringConversionTests: XCTestCase {
 
     func testKeyPath() {
-        let string = String(describing: \MyStruct.child)
+        let keyPath = \MyStruct.child
+        let string = keyPath.path
         XCTAssertEqual(string, "/child")
     }
     
     func testDeepKeyPath() {
-        let string = String(describing: \MyStruct.child.name)
+        let keyPath = \MyStruct.child.name
+        let string = keyPath.path
         XCTAssertEqual(string, "/child/name")
     }
 
 }
 
-private class MyStruct: NSObject {
-    @objc let child: Child
-    init(child: Child) {
-        self.child = child
-    }
+private struct MyStruct {
+    let child: Child
 }
 
-private class Child: NSObject {
-    @objc let name: String
+private class Child {
+    let name: String
     init(name: String) {
         self.name = name
     }
